@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body onload="showTasks()" class="">
+    <main>
+      <div class="main-container">
+        <!-- header start -->
+        <section class="header">
+          <h1 class="color-main">Task Manager</h1>
+          <div class="actions-container">
+            <select name="actions" id="bulk-actions">
+              <option value="">Actions</option>
+              <option value="mark-tasks-as-complete">Mark as Complete</option>
+              <option value="mark-tasks-as-incomplete">
+                Mark as Incomplete
+              </option>
+              <option value="delete-selected-tasks">Delete Selected</option>
+            </select>
+            <button id="delete-all-btn" onclick="deleteSelectedTasks()" class="btn-main bg-danger">
+              Delete All
+            </button>
+            <button onclick="openModal()" class="btn-main bg-main">Add</button>
+          </div>
+        </section>
+        <!-- header end -->
+
+        <!-- task counter start -->
+        <section class="task-counter">
+          <div class="bg-light count-box">Total: <span id="total-tasks"></span></div>
+          <div class="bg-success count-box">Completed: <span id="completed-tasks"></span></div>
+        </section>
+        <!-- task counter end -->
+
+        <!-- task filter start -->
+        <section class="task-filter">
+          <div class="search">
+            <input placeholder="Search Task" name="search" type="text" />
+          </div>
+          <div class="filter">
+            <button onclick="selectAllTasks()" class="btn-main bg-main">
+              Select All
+            </button>
+            <select name="status" id="">
+              <option value="">All</option>
+              <option value="">Incomplete</option>
+              <option value="">Complete</option>
+            </select>
+          </div>
+        </section>
+        <!-- task filter end -->
+
+        <!-- task list container start -->
+        <section class="task-list-container">
+          <div class="heading">
+            <div class="title">Title</div>
+            <div class="description">Description</div>
+            <div class="status">Status</div>
+            <div class="action">Action</div>
+          </div>
+          <div class="task-list"></div>
+        </section>
+        <!-- task list container end -->
+      </div>
+    </main>
+
+    <!-- modal start -->
+    <section class="modal">
+      <div class="cancel-btn">
+        <button onclick="closeModal()" class="bg-main">x</button>
+      </div>
+      <div class="add-task-container">
+        <h2 class="title">Add Task</h2>
+        <input type="hidden" name="task-id" class="task-id" />
+        <input type="hidden" name="task-status" class="task-status" />
+        <div class="field">
+          <label for="">Title</label>
+          <input
+            class="task-title"
+            placeholder="Enter Title"
+            required
+            type="text"
+            name="title"
+          />
+        </div>
+        <div class="field">
+          <label for="">Description</label>
+          <textarea
+            class="task-description"
+            placeholder="Enter Description"
+            required
+            name="description"
+            id=""
+            cols="30"
+            rows="6"
+          ></textarea>
+        </div>
+        <button
+          onclick="createOrEditTask()"
+          type="submit"
+          class="btn-main create-or-edit-task-btn bg-main"
+        >
+          Create Task
+        </button>
+      </div>
+    </section>
+    <!-- modal end -->
+
+    <script src="app.js"></script>
+  </body>
+</html>

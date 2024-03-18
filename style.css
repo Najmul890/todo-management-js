@@ -1,0 +1,211 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  background-color: #ecf0f1;
+  color: #fff;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  font-family: sans-serif;
+}
+main {
+  background-color: #fff;
+  box-shadow: -10px -10px 30px 4px rgba(0, 0, 0, 0.1),
+    10px 10px 30px 4px rgba(45, 78, 255, 0.15);
+  width: 80%;
+  min-height: 60vh;
+  margin: 0 auto;
+  border-radius: 12px;
+}
+.main-container {
+  padding: 50px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+h1 {
+  font-size: 56px;
+  line-height: 0;
+}
+.color-main {
+  color: #4834d4;
+}
+
+.bg-main {
+  background-color: #4834d4;
+}
+.bg-light {
+  background-color: #f39c12;
+}
+.bg-success {
+  background-color: #27ae60;
+}
+.bg-danger {
+  background-color: #ea2027;
+}
+.btn-main {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+}
+.modal {
+  display: none;
+  position: relative;
+  background-color: #fff;
+  box-shadow: -10px -10px 30px 4px rgba(0, 0, 0, 0.1),
+    10px 10px 30px 4px rgba(45, 78, 255, 0.15);
+  width: 30%;
+  border-radius: 8px;
+  margin: 0 auto;
+}
+.cancel-btn{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.cancel-btn button{
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+.add-task-container {
+  color: #4834d4;
+  padding: 60px 30px;
+  width: 100%;
+}
+.add-task-container .title{
+    margin-bottom: 20px;
+}
+.field{
+    margin-bottom: 20px;
+}
+label{
+    display: block;
+    margin-bottom: 10px;
+}
+.add-task-container input, textarea{
+    padding: 10px;
+    width: 80%;
+    outline: none;
+    border: 1px solid #4834d4;
+    color: #4834d4;
+    border-radius: 4px;
+}
+
+.actions-container {
+  display: flex;
+  gap: 30px;
+}
+
+/* task counter */
+.task-counter {
+  margin-top: 20px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 20px;
+}
+.task-counter .count-box {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.task-filter {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.task-filter .search {
+  flex: 1;
+}
+.task-filter .filter {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  justify-content: end;
+}
+.task-filter input {
+  padding: 14px;
+  width: 100%;
+  border-radius: 30px;
+  border: 1px solid #4834d4;
+  color: #4834d4;
+  outline: none;
+}
+select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #4834d4;
+  color: #4834d4;
+  outline: none;
+}
+
+/* task list container */
+.task-list-container {
+  color: #4834d4;
+  margin-top: 30px;
+}
+.task-list-container .heading {
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+}
+.task-list-container .task-item {
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+.task-list-container .heading .title,
+.task-item .title {
+  flex-basis: 25%;
+}
+.task-list-container .heading .description,
+.task-item .description {
+  flex-basis: 50%;
+}
+.task-list-container .heading .status,
+.task-item .status {
+  flex-basis: 15%;
+}
+.task-list-container .heading .action,
+.task-item .action {
+  flex-basis: 10%;
+}
+.task-list .task-item {
+  margin-top: 20px;
+}
+
+.task-item .description {
+  padding-right: 10px;
+}
+.task-item .status span {
+  display: inline !important;
+  padding: 4px 8px;
+  border-radius: 30px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+.task-item .action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.task-item .action svg{
+    cursor: pointer;
+}
