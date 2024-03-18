@@ -21,7 +21,7 @@
               </option>
               <option value="delete-selected-tasks">Delete Selected</option>
             </select>
-            <button id="delete-all-btn" onclick="deleteSelectedTasks()" class="btn-main bg-danger">
+            <button id="delete-all-btn" onclick="deleteAllTasks()" class="btn-main bg-danger">
               Delete All
             </button>
             <button onclick="openModal()" class="btn-main bg-main">Add</button>
@@ -42,18 +42,21 @@
             <input placeholder="Search Task" name="search" type="text" />
           </div>
           <div class="filter">
-            <button onclick="selectAllTasks()" class="btn-main bg-main">
+            <button id="select-btn" onclick="selectAllTasks()" class="btn-main bg-main">
               Select All
             </button>
-            <select name="status" id="">
-              <option value="">All</option>
-              <option value="">Incomplete</option>
-              <option value="">Complete</option>
+            <button id="unselect-btn" onclick="unselectAllTasks()" class="btn-main bg-main">
+              Unselect
+            </button>
+            <select name="status" id="filter-action">
+              <option value="all">All</option>
+              <option value="incomplete">Incomplete</option>
+              <option value="complete">Complete</option>
             </select>
           </div>
         </section>
         <!-- task filter end -->
-
+        
         <!-- task list container start -->
         <section class="task-list-container">
           <div class="heading">
@@ -63,7 +66,9 @@
             <div class="action">Action</div>
           </div>
           <div class="task-list"></div>
+
         </section>
+       
         <!-- task list container end -->
       </div>
     </main>

@@ -1,19 +1,29 @@
-let tasks = [
+const tasksData = [
   {
     id: 1,
     title: " Javascript Documentation",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla magni praesentium, voluptates quae fugiat omnis sed pariatur eos voluptate voluptas quaerat exercitationem velit? Maxime laborum, itaque dolorum magni numquam harum.",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla magni praesentium, voluptates quae fugiat omnis sed pariatur eos voluptate voluptas quaerat exercitationem velit?",
     status: "incomplete",
   },
   {
     id: 2,
     title: " Javascript Documentation 2",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla magni praesentium, voluptates quae fugiat omnis sed pariatur eos voluptate voluptas quaerat exercitationem velit? Maxime laborum, itaque dolorum magni numquam harum.",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla magni praesentium, voluptates quae fugiat omnis sed pariatur eos voluptate voluptas quaerat exercitationem velit?",
     status: "complete",
   },
 ];
+
+const storedTasks = localStorage.getItem("tasks");
+let tasks = storedTasks ? JSON.parse(storedTasks) : [...tasksData];
+
+function saveTasksToLocalStorage() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+const searchInput = document.querySelector('input[name="search"]');
+const filterAction = document.getElementById("filter-action");
 
 function openModal() {
   document.querySelector("main").style.display = "none";
@@ -40,10 +50,10 @@ function createOrEditTask() {
   } else {
     const title = document.querySelector(".task-title").value;
     const description = document.querySelector(".task-description").value;
-    const id = tasks[tasks.length - 1].id + 1;
+    const id = tasks?.length ? tasks[tasks.length - 1].id + 1 : 1;
     tasks.push({ id, title, description, status: "incomplete" });
   }
-
+  saveTasksToLocalStorage();
   closeModal();
   renderUI();
 }
@@ -75,12 +85,12 @@ function editTask() {
 function deleteTask(id) {
   if (confirm("Are you sure you want to delete this task?")) {
     tasks = tasks.filter((task) => task.id != id);
+    saveTasksToLocalStorage();
     renderUI();
   }
 }
 
 function changeStatus(id, currentStatus) {
-  console.log(id, currentStatus);
   const index = tasks.findIndex((task) => task.id == id);
   if (currentStatus === "incomplete") {
     tasks[index] = { ...tasks[index], status: "complete" };
@@ -128,13 +138,31 @@ function deleteSelectedTasks() {
   renderUI();
 }
 
+function deleteAllTasks() {
+  if (confirm("Are you sure you want to delete this all tasks?")) {
+    tasks = [];
+    saveTasksToLocalStorage();
+    selectedTasks = [];
+    renderUI();
+  }
+}
+
 function selectAllTasks() {
+  document.getElementById("unselect-btn").style.display = "block";
+  document.getElementById("select-btn").style.display = "none";
   tasks.forEach((task) => {
     if (!selectedTasks.includes(task.id)) {
       selectedTasks.push(task.id);
     }
   });
 
+  renderUI();
+}
+
+function unselectAllTasks() {
+  document.getElementById("select-btn").style.display = "block";
+  document.getElementById("unselect-btn").style.display = "none";
+  selectedTasks = [];
   renderUI();
 }
 
@@ -174,51 +202,99 @@ function getCompletedTasksCount(tasks) {
   return completedTasksCount;
 }
 
+let filteredTasks;
+
 function searchTasks(searchQuery) {
   const query = searchQuery.toLowerCase();
 
-  const searchResult = tasks.filter(task => task.title.toLowerCase().includes(query));
+  const searchResult = tasks.filter((task) =>
+    task.title.toLowerCase().includes(query)
+  );
 
   return searchResult;
 }
 
-const searchInput = document.querySelector('input[name="search"]');
+function filterTasks(status) {
+  if (status !== "") {
+    const filteredResult = tasks.filter((task) => task.status === status);
+    filteredTasks = filteredResult;
+  } else {
+    filteredTasks = [...tasks];
+  }
+  renderUI();
+}
 
-searchInput.addEventListener('input', function(event) {
-  const searchQuery = event.target.value;
-  const searchResult = searchTasks(searchQuery);
-  // tasks= searchResult;
-  
+// filter task via status
+filterAction.addEventListener("change", function (event) {
+  searchInput.value = "";
+  const selectedStatus = event.target.value;
+
+  switch (selectedStatus) {
+    case "all":
+      filterTasks("");
+      break;
+    case "complete":
+      filterTasks("complete");
+      break;
+    case "incomplete":
+      filterTasks("incomplete");
+      break;
+    default:
+      break;
+  }
+
+  renderUI();
 });
 
+searchInput.addEventListener("input", function (event) {
+  filterAction.value = "all";
+  const searchQuery = event.target.value.trim();
+  const searchResult = searchTasks(searchQuery);
+  filteredTasks = searchResult;
+  renderUI();
+});
 
 function renderUI() {
   document.getElementById("total-tasks").innerText = tasks.length;
-  document.getElementById("completed-tasks").innerText = getCompletedTasksCount(tasks);
-  console.log(selectedTasks.length);
+  document.getElementById("completed-tasks").innerText =
+    getCompletedTasksCount(tasks);
   if (tasks.length > 1) {
     document.getElementById("delete-all-btn").style.display = "block";
   } else {
     document.getElementById("delete-all-btn").style.display = "none";
   }
-  if (selectedTasks.length < 2) {
-    bulkActionsSelect.style.display = "none";
-  } else {
+  if (selectedTasks.length > 0) {
     bulkActionsSelect.style.display = "block";
+  } else {
+    bulkActionsSelect.style.display = "none";
   }
-  showTasks();
+
+  saveTasksToLocalStorage();
+  if (filteredTasks) {
+    showTasks([...filteredTasks]);
+  } else {
+    showTasks([...tasks]);
+  }
 }
 
-function showTasks() {
+
+
+function showTasks(tasksItems) {
   let tableElement = document.querySelector(".task-list");
+
   let elements = "";
 
-  tasks
-    .slice()
-    .reverse()
-    .map(
-      (task) =>
-        (elements += `
+  if (tasks.length === 0) {
+    elements = `<div class="no-tasks-found">Task List empty!</div>`;
+  } else if (tasks.length > 0 && filteredTasks?.length === 0) {
+    elements = `<div class="no-tasks-found">No Task Found!</div>`;
+  } else {
+    tasksItems
+      .slice()
+      .reverse()
+      .map(
+        (task) =>
+          (elements += `
         <div class="task-item">
         
         <div class="title">
@@ -273,7 +349,9 @@ function showTasks() {
         
       </div>
       `)
-    );
+      );
+  }
+
   tableElement.innerHTML = elements;
 }
 
