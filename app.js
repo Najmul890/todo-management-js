@@ -159,9 +159,13 @@ function selectAllTasks() {
   renderUI();
 }
 
-function unselectAllTasks() {
+function hideUnselectBtn(){
   document.getElementById("select-btn").style.display = "block";
   document.getElementById("unselect-btn").style.display = "none";
+}
+
+function unselectAllTasks() {
+  hideUnselectBtn();
   selectedTasks = [];
   renderUI();
 }
@@ -186,7 +190,7 @@ bulkActionsSelect.addEventListener("change", function (event) {
   }
 
   this.selectedIndex = 0;
-
+  hideUnselectBtn();
   renderUI();
 });
 
@@ -258,6 +262,7 @@ function renderUI() {
   document.getElementById("total-tasks").innerText = tasks.length;
   document.getElementById("completed-tasks").innerText =
     getCompletedTasksCount(tasks);
+  
   if (tasks.length > 1) {
     document.getElementById("delete-all-btn").style.display = "block";
   } else {
@@ -276,8 +281,6 @@ function renderUI() {
     showTasks([...tasks]);
   }
 }
-
-
 
 function showTasks(tasksItems) {
   let tableElement = document.querySelector(".task-list");
